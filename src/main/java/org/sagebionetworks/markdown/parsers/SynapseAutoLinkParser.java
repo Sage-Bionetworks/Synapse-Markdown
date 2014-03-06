@@ -12,7 +12,12 @@ public class SynapseAutoLinkParser extends BasicMarkdownElementParser {
 		Matcher m = p.matcher(line.getMarkdown());
 		StringBuffer sb = new StringBuffer();
 		while(m.find()) {
-			String updated = "<a class=\"link\" href=\"#!Synapse:" + m.group(1) +"\">" + m.group(1) + "</a>";
+			//is there a version defined?
+			String versionString = "";
+			if (m.group(2) != null && m.group(2).trim().length() > 0) {
+				versionString = "/version/" + m.group(2);
+			}
+			String updated = "<a class=\"link\" href=\"#!Synapse:" + m.group(1) + versionString + "\">" + m.group(0) + "</a>";
 			m.appendReplacement(sb, updated);
 		}
 		m.appendTail(sb);

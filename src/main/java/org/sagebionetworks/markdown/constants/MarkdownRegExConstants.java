@@ -157,7 +157,7 @@ public class MarkdownRegExConstants {
 	 * Recognized example input:
 	 * syn12345
 	 */
-	public static final String LINK_SYNAPSE = "(?<=[\\W&&[^:]]|^)(syn\\d+)";
+	public static final String LINK_SYNAPSE = "(?<=[\\W&&[^:]]|^)(syn\\d+)[.]?(\\d*)";
 	
 	/**
 	 * Recognized example input:
