@@ -1,7 +1,6 @@
 package org.sagebionetworks.markdown.parsers;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,26 @@ public class LinkParserTest {
 		//simpleparsers has a the italics parser, so it should result in italicized text
 		assertTrue(html.contains("<em"));
 		assertTrue(html.contains("</em>"));
+	}
+	
+	@Test
+	public void testInternalLink(){
+		String text = "test";
+		String href = "#Synapse:syn123";
+		String line = "[" + text + "](" + href +")";
+		MarkdownElements elements = new MarkdownElements(line);
+		parser.processLine(elements);
+		String result = elements.getHtml();
+		assertTrue(!result.contains("#!Synapse:syn123"));
+		assertTrue(result.contains(ServerMarkdownUtils.START_CONTAINER));
+		assertTrue(result.contains(ServerMarkdownUtils.END_CONTAINER));
+		
+		Document doc = Jsoup.parse(result);
+		parser.completeParse(doc);
+		String html = doc.html();
+		assertTrue(html.contains("#!Synapse:syn123"));
+		assertTrue(html.contains("<a"));
+		assertTrue(html.contains("</a>"));
 	}
 	
 	@Test

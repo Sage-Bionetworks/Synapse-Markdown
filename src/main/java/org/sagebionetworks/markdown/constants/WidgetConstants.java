@@ -1,5 +1,10 @@
 package org.sagebionetworks.markdown.constants;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 
 public class WidgetConstants {
 	public static final String ENTITY_DESCRIPTION_ATTACHMENT_PREFIX = "Attachment/entity/";

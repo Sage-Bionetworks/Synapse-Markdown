@@ -56,8 +56,14 @@ public class LinkParser extends BasicMarkdownElementParser  {
 				//Check for incomplete urls (i.e. urls starting without http/ftp/file/#)
 				String testUrl = url.toLowerCase();
 				Matcher protocolMatcher = protocol.matcher(testUrl);
-				if(!protocolMatcher.find() && !testUrl.startsWith("#")) {
-					url = WidgetConstants.URL_PROTOCOL + url;
+				if(!protocolMatcher.find()) {
+					if (!testUrl.startsWith("#"))
+						url = WidgetConstants.URL_PROTOCOL + url; 
+					else {
+						//starts with '#'.  if does not include bang, add it here
+						if(testUrl.length() > 1 && testUrl.charAt(1) != '!')
+							url = "#!" + url.substring(1);
+					}
 				}
 				
 				StringBuilder html = new StringBuilder();
