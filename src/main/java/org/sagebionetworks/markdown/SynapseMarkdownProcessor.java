@@ -8,9 +8,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 import org.sagebionetworks.markdown.constants.MarkdownRegExConstants;
 import org.sagebionetworks.markdown.parsers.BacktickParser;
 import org.sagebionetworks.markdown.parsers.BlockQuoteParser;
@@ -44,10 +46,6 @@ import org.sagebionetworks.markdown.utils.ServerMarkdownUtils;
 public class SynapseMarkdownProcessor {
 	private static SynapseMarkdownProcessor singleton = null;
 	private List<MarkdownElementParser> allElementParsers = new ArrayList<MarkdownElementParser>();
-	
-	//efficient hack to preserve strings that the html stripping process ruins
-	private Map<Pattern, String> preservers = new HashMap<Pattern, String>();
-	private Map<Pattern, String> restorers = new HashMap<Pattern, String>();
 	
 	private CodeParser codeParser;
 	private MathParser mathParser;
@@ -97,27 +95,6 @@ public class SynapseMarkdownProcessor {
 		allElementParsers.add(new SuperscriptParser());
 		allElementParsers.add(new SynapseAutoLinkParser());
 		allElementParsers.add(new TableParser());
-		
-		//preservers
-		preservers.put(Pattern.compile(MarkdownRegExConstants.NEWLINE_REGEX), ServerMarkdownUtils.TEMP_NEWLINE_DELIMITER);
-		preservers.put(Pattern.compile(MarkdownRegExConstants.SPACE_REGEX), ServerMarkdownUtils.TEMP_SPACE_DELIMITER);
-		preservers.put(Pattern.compile(MarkdownRegExConstants.LT_REGEX), ServerMarkdownUtils.TEMP_LESS_THAN_DELIMITER);
-		preservers.put(Pattern.compile(MarkdownRegExConstants.GT_REGEX), ServerMarkdownUtils.TEMP_GREATER_THAN_DELIMITER);
-		
-		//restorers
-		restorers.put(Pattern.compile("("+Pattern.quote(ServerMarkdownUtils.TEMP_NEWLINE_DELIMITER)+")"), "\n");
-		restorers.put(Pattern.compile("("+Pattern.quote(ServerMarkdownUtils.TEMP_SPACE_DELIMITER)+")"), " ");
-		restorers.put(Pattern.compile("("+Pattern.quote(ServerMarkdownUtils.TEMP_LESS_THAN_DELIMITER)+")"), "&lt;");
-		restorers.put(Pattern.compile("("+Pattern.quote(ServerMarkdownUtils.TEMP_GREATER_THAN_DELIMITER)+")"), "&gt;");
-	}
-	
-	private String applyPatternReplacements(String markdown, Map<Pattern, String> pattern2Replacement) {
-		String returnMarkdown = markdown;
-		for (Pattern p : pattern2Replacement.keySet()) {
-			Matcher m = p.matcher(returnMarkdown);
-			returnMarkdown = m.replaceAll(pattern2Replacement.get(p));
-		}
-		return returnMarkdown;
 	}
 	
 	/**
@@ -135,15 +112,9 @@ public class SynapseMarkdownProcessor {
 		String originalMarkdown = markdown;
 		if (markdown == null || markdown.equals("")) return "";
 		
-		//trick to maintain newlines when suppressing all html
-		if (markdown != null) {
-			markdown = applyPatternReplacements(markdown, preservers);
-		}
-		//played with other forms of html stripping, 
-		//and this method has been the least destructive (compared to clean() with various WhiteLists, or using java HTMLEditorKit to do it).
-		markdown = Jsoup.parse(markdown).text();
-		markdown = applyPatternReplacements(markdown, restorers);
-
+		//To enable different html levels, we should change the Whitelist.  that's it!
+		markdown = Jsoup.clean(markdown, "", Whitelist.none(),  new Document.OutputSettings().prettyPrint(false));
+		markdown = Pattern.compile("^&gt;", Pattern.MULTILINE).matcher(markdown).replaceAll(">");
 		//now make the main single pass to identify markdown elements and create the output
 		markdown = StringUtils.replace(markdown, ServerMarkdownUtils.R_MESSED_UP_ASSIGNMENT, ServerMarkdownUtils.R_ASSIGNMENT);
 
