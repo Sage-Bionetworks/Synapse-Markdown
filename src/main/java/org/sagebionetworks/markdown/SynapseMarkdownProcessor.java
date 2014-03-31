@@ -2,18 +2,13 @@ package org.sagebionetworks.markdown;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
-import org.sagebionetworks.markdown.constants.MarkdownRegExConstants;
 import org.sagebionetworks.markdown.parsers.BacktickParser;
 import org.sagebionetworks.markdown.parsers.BlockQuoteParser;
 import org.sagebionetworks.markdown.parsers.BoldParser;
@@ -46,7 +41,7 @@ import org.sagebionetworks.markdown.utils.ServerMarkdownUtils;
 public class SynapseMarkdownProcessor {
 	private static SynapseMarkdownProcessor singleton = null;
 	private List<MarkdownElementParser> allElementParsers = new ArrayList<MarkdownElementParser>();
-	
+	private Pattern blockquotePatternProtector;
 	private CodeParser codeParser;
 	private MathParser mathParser;
 	public static SynapseMarkdownProcessor getInstance() {
@@ -95,6 +90,7 @@ public class SynapseMarkdownProcessor {
 		allElementParsers.add(new SuperscriptParser());
 		allElementParsers.add(new SynapseAutoLinkParser());
 		allElementParsers.add(new TableParser());
+		blockquotePatternProtector = Pattern.compile("^&gt;", Pattern.MULTILINE);
 	}
 	
 	/**
@@ -114,7 +110,7 @@ public class SynapseMarkdownProcessor {
 		
 		//To enable different html levels, we should change the Whitelist.  that's it!
 		markdown = Jsoup.clean(markdown, "", Whitelist.none(),  new Document.OutputSettings().prettyPrint(false));
-		markdown = Pattern.compile("^&gt;", Pattern.MULTILINE).matcher(markdown).replaceAll(">");
+		markdown = blockquotePatternProtector.matcher(markdown).replaceAll(">");
 		//now make the main single pass to identify markdown elements and create the output
 		markdown = StringUtils.replace(markdown, ServerMarkdownUtils.R_MESSED_UP_ASSIGNMENT, ServerMarkdownUtils.R_ASSIGNMENT);
 
