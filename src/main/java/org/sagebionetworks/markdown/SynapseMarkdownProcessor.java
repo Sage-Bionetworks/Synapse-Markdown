@@ -111,9 +111,7 @@ public class SynapseMarkdownProcessor {
 		//To enable different html levels, we should change the Whitelist.  that's it!
 		markdown = Jsoup.clean(markdown, "", Whitelist.none(),  new Document.OutputSettings().prettyPrint(false));
 		markdown = blockquotePatternProtector.matcher(markdown).replaceAll(">");
-		//now make the main single pass to identify markdown elements and create the output
-		markdown = StringUtils.replace(markdown, ServerMarkdownUtils.R_MESSED_UP_ASSIGNMENT, ServerMarkdownUtils.R_ASSIGNMENT);
-
+		
 		String html = processMarkdown(markdown, allElementParsers, isPreview, clientHostString);
 		if (html == null) {
 			//if the markdown processor fails to convert the md to html (will return null in this case), return the raw markdown instead. (as ugly as it might be, it's better than no information).
