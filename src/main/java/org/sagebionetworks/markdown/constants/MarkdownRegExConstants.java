@@ -114,7 +114,7 @@ public class MarkdownRegExConstants {
 	 * or
 	 * {|
 	 */
-	public static final String TABLE_START_REGEX = "(\\{\\|\\s*class=\"(.*?)\"\\s*)|(\\{\\|\\s*)";
+	public static final String TABLE_START_REGEX = "(\\{\\|\\s*class=&quot;(.*?)&quot;\\s*)|(\\{\\|\\s*)";
 	
 	/**
 	 * Recognized example input:

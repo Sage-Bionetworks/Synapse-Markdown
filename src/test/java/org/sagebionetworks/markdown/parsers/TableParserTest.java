@@ -32,7 +32,7 @@ public class TableParserTest {
 	
 	@Test
 	public void testExampleTable(){
-		String start = "{| class=\"border\"";
+		String start = "{| class=&quot;border&quot;";
 		String exampleLine1 = "Row 1 Content Cell 1 | Row 1 Content Cell 2  | Row 1 Content Cell 3";
 		String exampleLine2 = "Row 2 Content Cell 1  | Row 2 Content Cell 2  | Row 2 Content Cell 3";
 		String end = "|}";
