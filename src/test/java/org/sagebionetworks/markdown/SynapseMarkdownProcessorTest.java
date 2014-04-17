@@ -69,6 +69,18 @@ public class SynapseMarkdownProcessorTest {
 	}
 	
 	@Test
+	public void testTableClassSupport() throws IOException{
+		String testString = 
+				"{| class=\"border text-align-center\" \n Row 1 Content Cell 1 | Row 1 Content Cell 2 | Row 1 Content Cell 3 \n |} ";
+		
+		String actualResult = processor.markdown2Html(testString, false, "");
+		assertTrue(actualResult.contains("<table"));
+		assertTrue(actualResult.contains("class=\"tablesorter markdowntable border text-align-center\""));
+		assertTrue(actualResult.contains("<tr>"));
+		assertTrue(actualResult.contains("<td>"));
+	}
+	
+	@Test
 	public void testListAndHeaderInBlockquote() throws IOException{
 		//complicated integration test of all parsers
 		String testString = 
