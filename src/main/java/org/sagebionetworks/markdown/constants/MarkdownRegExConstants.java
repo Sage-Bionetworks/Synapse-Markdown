@@ -130,6 +130,20 @@ public class MarkdownRegExConstants {
 	
 	/**
 	 * Recognized example input:
+	 * {row}
+	 */
+	public static final String ROW_REGEX = "\\{row\\}";
+
+	/**
+	 * Recognized example input (don't be greedy, match to the first closing brace that it finds):
+	 * {column}
+	 * {column width=6}
+	 */
+	public static final String COLUMN_REGEX = "\\{column(.*?)\\}";
+
+	
+	/**
+	 * Recognized example input:
 	 * No starting whitespace or
 	 * 		Starting whitespace
 	 */

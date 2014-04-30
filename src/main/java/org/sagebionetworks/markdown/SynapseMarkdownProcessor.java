@@ -26,6 +26,7 @@ import org.sagebionetworks.markdown.parsers.MarkdownElementParser;
 import org.sagebionetworks.markdown.parsers.MarkdownElements;
 import org.sagebionetworks.markdown.parsers.MathParser;
 import org.sagebionetworks.markdown.parsers.ReferenceParser;
+import org.sagebionetworks.markdown.parsers.RowColumnParser;
 import org.sagebionetworks.markdown.parsers.StrikeoutParser;
 import org.sagebionetworks.markdown.parsers.SubscriptParser;
 import org.sagebionetworks.markdown.parsers.SuperscriptParser;
@@ -90,6 +91,7 @@ public class SynapseMarkdownProcessor {
 		allElementParsers.add(new SuperscriptParser());
 		allElementParsers.add(new SynapseAutoLinkParser());
 		allElementParsers.add(new TableParser());
+		allElementParsers.add(new RowColumnParser());
 		blockquotePatternProtector = Pattern.compile("^&gt;", Pattern.MULTILINE);
 	}
 	
