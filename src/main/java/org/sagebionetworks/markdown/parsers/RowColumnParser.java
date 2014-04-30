@@ -46,25 +46,29 @@ public class RowColumnParser extends BasicMarkdownElementParser {
 			if (parameters.trim().length() > 0) {
 				Scanner s = null;
 				try {
+					//alternate between key and value
+					boolean isKey = true;
+					
 					//split on whitespace or '='
 					s = new Scanner(parameters).useDelimiter("[\\s=]");
 					while (s.hasNext()) {
 						//recognized key?
-						boolean recognizedKey = false;
-						String key = s.next();
-						if (key.equalsIgnoreCase("width")) {
-							recognizedKey = true;
-							cssClassString.append(" col-sm-");
-						} else if (key.equalsIgnoreCase("offset")) {
-							recognizedKey = true;
-							cssClassString.append(" col-sm-offset-");
-						}
-						if (s.hasNext()) {
-							//value
-							String value = s.next();
-							if (recognizedKey) {
-								//output value
-								cssClassString.append(value + " ");
+						String v = s.next();
+						if (v.trim().length() > 0) {
+							if (isKey) {
+								//key
+								if (v.equalsIgnoreCase("width")) {
+									cssClassString.append(" col-sm-");
+								} else if (v.equalsIgnoreCase("offset")) {
+									cssClassString.append(" col-sm-offset-");
+								}
+								//next token will be the value
+								isKey = false;
+							} else {
+								//value
+								cssClassString.append(v + " ");
+								//next token will be a key
+								isKey = true;
 							}
 						}
 					}

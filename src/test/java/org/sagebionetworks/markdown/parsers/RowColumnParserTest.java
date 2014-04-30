@@ -1,6 +1,6 @@
 package org.sagebionetworks.markdown.parsers;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +21,7 @@ public class RowColumnParserTest {
 		MarkdownElements elements = new MarkdownElements(line1);
 		parser.processLine(elements);
 		assertTrue(elements.getHtml().contains("<div class=\"row\""));
+		assertTrue(parser.isInMarkdownElement());
 		elements = new MarkdownElements(line2);
 		parser.processLine(elements);
 		assertTrue(elements.getHtml().contains("col-sm-6"));
@@ -30,5 +31,15 @@ public class RowColumnParserTest {
 		elements = new MarkdownElements(line3);
 		parser.processLine(elements);
 		assertTrue(elements.getHtml().contains("</div>"));
+		assertFalse(parser.isInMarkdownElement());
+	}
+	
+	@Test
+	public void testRowColumn(){
+		String line = "{column offset = 1 width = 2}";
+		MarkdownElements elements = new MarkdownElements(line);
+		parser.processLine(elements);
+		assertTrue(elements.getHtml().contains("col-sm-2"));
+		assertTrue(elements.getHtml().contains("col-sm-offset-1"));
 	}
 }
