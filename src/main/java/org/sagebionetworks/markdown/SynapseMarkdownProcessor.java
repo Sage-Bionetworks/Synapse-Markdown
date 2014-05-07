@@ -13,6 +13,7 @@ import org.sagebionetworks.markdown.parsers.BacktickParser;
 import org.sagebionetworks.markdown.parsers.BlockQuoteParser;
 import org.sagebionetworks.markdown.parsers.BoldParser;
 import org.sagebionetworks.markdown.parsers.BookmarkTargetParser;
+import org.sagebionetworks.markdown.parsers.CenterTextParser;
 import org.sagebionetworks.markdown.parsers.CodeParser;
 import org.sagebionetworks.markdown.parsers.CodeSpanParser;
 import org.sagebionetworks.markdown.parsers.DoiAutoLinkParser;
@@ -89,6 +90,7 @@ public class SynapseMarkdownProcessor {
 		allElementParsers.add(new StrikeoutParser());
 		allElementParsers.add(new SubscriptParser());
 		allElementParsers.add(new SuperscriptParser());
+		allElementParsers.add(new CenterTextParser());
 		allElementParsers.add(new SynapseAutoLinkParser());
 		allElementParsers.add(new TableParser());
 		allElementParsers.add(new RowColumnParser());

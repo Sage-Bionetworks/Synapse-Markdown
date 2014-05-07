@@ -157,6 +157,15 @@ public class SynapseMarkdownProcessorTest {
 	}
 	
 	@Test
+	public void testCenterHeadlineText() throws IOException{
+		String testString = "##->Centered Headline<-";
+		String actualResult = processor.markdown2Html(testString, false, "");
+		assertTrue(actualResult.contains("h2"));
+		assertTrue(actualResult.contains("text-align-center"));
+		
+	}
+	
+	@Test
 	public void testSpaces() throws IOException{
 		String testString = "The hi in t**hi**s is bold. No spaces in H~2~O.";
 		String result = processor.markdown2Html(testString, false, "");

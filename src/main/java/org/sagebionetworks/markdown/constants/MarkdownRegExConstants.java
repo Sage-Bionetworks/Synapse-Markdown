@@ -245,4 +245,13 @@ public class MarkdownRegExConstants {
 	public static final String SPACE_REGEX = "([ ])";
 	public static final String LT_REGEX = "(&lt;)";
 	public static final String GT_REGEX = "(&gt;)";
+	
+	/**
+	 * Recognized example markdown input:
+	 * ->centered text<-
+	 * Recognized pattern input:
+	 * -&gt;centered text&lt;-
+	 */
+	public static final String CENTER_TEXT_REGEX = "-"+GT_REGEX+"(?=\\S*)(.+?)(?<=\\S*)"+LT_REGEX+"-";
+	
 }
