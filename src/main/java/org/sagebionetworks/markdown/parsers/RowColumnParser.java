@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.sagebionetworks.markdown.constants.MarkdownRegExConstants;
+import org.sagebionetworks.markdown.utils.ServerMarkdownUtils;
 
 public class RowColumnParser extends BasicMarkdownElementParser {
 	Pattern rowPattern = Pattern.compile(MarkdownRegExConstants.ROW_REGEX);
@@ -85,8 +86,19 @@ public class RowColumnParser extends BasicMarkdownElementParser {
 			}
 			isInColumn = !isInColumn;
 		}
+		
 		m.appendTail(sb);
+		if (isInRow && isInColumn) {
+			//if we are in the row, do not output an html line break unless we're in a column too
+			sb.append(ServerMarkdownUtils.HTML_LINE_BREAK);
+		}
 		line.updateMarkdown(sb.toString());
+	}
+	
+	@Override
+	public boolean isBlockElement() {
+		//we handle newlines
+		return true;
 	}
 	
 	@Override

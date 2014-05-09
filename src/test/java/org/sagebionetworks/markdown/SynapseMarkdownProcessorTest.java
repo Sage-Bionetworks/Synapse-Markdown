@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sagebionetworks.markdown.parsers.MarkdownElements;
 
 public class SynapseMarkdownProcessorTest {
 
@@ -171,5 +172,23 @@ public class SynapseMarkdownProcessorTest {
 		String result = processor.markdown2Html(testString, false, "");
 		assertTrue(result.contains("<strong>hi</strong>"));
 		assertTrue(result.contains("No spaces in H<sub>2</sub>O."));
+	}
+	
+	
+	@Test
+	public void testRowColumnMultiline() throws IOException{
+		
+		String testString =
+			"{row}\n"+
+			"{column width=6}\n"+
+			"### Hello World\n"+
+			"{column}\n"+
+			"{column width=6}\n"+ 
+			"### How are you?\n"+
+			"{column}\n"+
+			"{row}";
+		String result = processor.markdown2Html(testString, false, "");
+		
+		assertTrue(result.contains("</div><div"));
 	}
 }
