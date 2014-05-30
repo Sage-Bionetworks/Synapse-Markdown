@@ -12,6 +12,8 @@ import org.sagebionetworks.markdown.utils.SharedMarkdownUtils;
 public class LinkParser extends BasicMarkdownElementParser  {
 	Pattern p1= Pattern.compile(MarkdownRegExConstants.LINK_REGEX, Pattern.DOTALL);
 	Pattern protocol = Pattern.compile(MarkdownRegExConstants.LINK_URL_PROTOCOL, Pattern.DOTALL);
+	Pattern synapseIdPattern = Pattern.compile(MarkdownRegExConstants.LINK_SYNAPSE);
+	
 	MarkdownExtractor extractor;
 	MarkdownElementParser widgetParser;
 	private List<MarkdownElementParser> simpleParsers;
@@ -53,16 +55,27 @@ public class LinkParser extends BasicMarkdownElementParser  {
 				updated.append(WidgetConstants.BOOKMARK_KEY + "=" +	url.substring(bookmarkTarget.length()));
 				updated.append(WidgetConstants.WIDGET_END_MARKDOWN);			
 			} else {
-				//Check for incomplete urls (i.e. urls starting without http/ftp/file/#)
 				String testUrl = url.toLowerCase();
-				Matcher protocolMatcher = protocol.matcher(testUrl);
-				if(!protocolMatcher.find()) {
-					if (!testUrl.startsWith("#"))
-						url = WidgetConstants.URL_PROTOCOL + url; 
-					else {
-						//starts with '#'.  if does not include bang, add it here
-						if(testUrl.length() > 1 && testUrl.charAt(1) != '!')
-							url = "#!" + url.substring(1);
+				//is this a synapse id?
+				Matcher synapseIdMatcher = synapseIdPattern.matcher(testUrl);
+				if(synapseIdMatcher.find()) {
+					//is there a version defined?
+					String versionString = "";
+					if (synapseIdMatcher.group(2) != null && synapseIdMatcher.group(2).trim().length() > 0) {
+						versionString = "/version/" + synapseIdMatcher.group(2);
+					}
+					url = "#!Synapse:" + synapseIdMatcher.group(1) + versionString;
+				} else {
+					//Check for incomplete urls (i.e. urls starting without http/ftp/file/#)
+					Matcher protocolMatcher = protocol.matcher(testUrl);
+					if(!protocolMatcher.find()) {
+						if (!testUrl.startsWith("#"))
+							url = WidgetConstants.URL_PROTOCOL + url; 
+						else {
+							//starts with '#'.  if does not include bang, add it here
+							if(testUrl.length() > 1 && testUrl.charAt(1) != '!')
+								url = "#!" + url.substring(1);
+						}
 					}
 				}
 				
