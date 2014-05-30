@@ -177,7 +177,7 @@ public class MarkdownRegExConstants {
 	 * Recognized example input:
 	 * http: or ftp: or file:
 	 */
-	public static final String LINK_URL_PROTOCOL = "(https?|ftp|file):";
+	public static final String LINK_URL_PROTOCOL = "(https?|ftp|file|mailto):";
 	
 	/**
 	 * from http://stackoverflow.com/questions/163360/regular-expresion-to-match-urls-java 

@@ -112,4 +112,44 @@ public class LinkParserTest {
 		assertTrue(result.contains(ServerMarkdownUtils.END_CONTAINER));
 	}
 	
+	@Test
+	public void testSynapseLinkWithText(){
+		String text = "custom link text";
+		String href = "syn123";
+		String line = "[" + text + "](" + href +")";
+		MarkdownElements elements = new MarkdownElements(line);
+		parser.processLine(elements);
+		String result = elements.getHtml();
+		Document doc = Jsoup.parse(result);
+		parser.completeParse(doc);
+		String html = doc.html();
+		assertTrue(html.contains("#!Synapse:syn123"));
+		assertTrue(html.contains(text));
+		
+		//with version
+		href = "syn123.10";
+		line = "[" + text + "](" + href +")";
+		elements = new MarkdownElements(line);
+		parser.processLine(elements);
+		result = elements.getHtml();
+		doc = Jsoup.parse(result);
+		parser.completeParse(doc);
+		html = doc.html();
+		assertTrue(html.contains("href=\"#!Synapse:syn123/version/10\""));
+	}
+	
+	@Test
+	public void testMailTo(){
+		String text = "custom mailto text";
+		String href = "mailto:markdown_testing@jayhodgson.com";
+		String line = "[" + text + "](" + href +")";
+		MarkdownElements elements = new MarkdownElements(line);
+		parser.processLine(elements);
+		String result = elements.getHtml();
+		Document doc = Jsoup.parse(result);
+		parser.completeParse(doc);
+		String html = doc.html();
+		assertTrue(html.contains(href));
+		assertTrue(html.contains(text));
+	}
 }
