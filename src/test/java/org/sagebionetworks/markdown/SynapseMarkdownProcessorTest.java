@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sagebionetworks.markdown.constants.WidgetConstants;
 import org.sagebionetworks.markdown.parsers.MarkdownElements;
 
 public class SynapseMarkdownProcessorTest {
@@ -47,6 +48,16 @@ public class SynapseMarkdownProcessorTest {
 		assertTrue(!actualResult.contains("<table>"));
 		assertTrue(!actualResult.contains("<iframe>"));
 		assertTrue(!actualResult.contains("<embed>"));
+	}
+
+	@Test
+	public void testReference() throws IOException{
+		//Integration level test for reference widget
+		String text = "This is a ref ${reference?text=very simple&inlineWidget=true}.";
+		String actualResult = processor.markdown2Html(text, false, "");
+		//should find evidence in the output that the reference was identified and processed
+		assertTrue(actualResult.contains(WidgetConstants.REFERENCE_FOOTNOTE_KEY));
+		assertTrue(actualResult.contains(WidgetConstants.FOOTNOTE_ID_WIDGET_PREFIX));
 	}
 	
 	@Test
