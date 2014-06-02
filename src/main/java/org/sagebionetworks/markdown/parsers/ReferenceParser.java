@@ -46,7 +46,7 @@ public class ReferenceParser extends BasicMarkdownElementParser {
 			String referenceId = WidgetConstants.REFERENCE_ID_WIDGET_PREFIX + footnoteNumber;
 			String footnoteParameter = WidgetConstants.REFERENCE_FOOTNOTE_KEY + "=" + footnoteNumber;
 			
-			String updated = "<span id=\"" + referenceId + "\"></span>" + input.substring(m.start(), m.end() - 1) + "&" + footnoteParameter + "}";
+			String updated = "<span id=\"" + referenceId + "\"></span>" + input.substring(m.start(), m.end() - 1) + "&amp;" + footnoteParameter + "}";
 			updated = Matcher.quoteReplacement(updated);	//Escapes the replacement string for appendReplacement
 			m.appendReplacement(sb, updated);
 			footnoteNumber++;
