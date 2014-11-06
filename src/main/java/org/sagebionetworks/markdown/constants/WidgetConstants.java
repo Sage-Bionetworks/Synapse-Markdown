@@ -18,6 +18,7 @@ public class WidgetConstants {
     public static final String DIV_ID_LINK_PREFIX = "link-";
 	public static final String DIV_ID_AUTOLINK_PREFIX = "autolink-";
 	public static final String DIV_ID_IMAGE_PREFIX = "image-";
+	public static final String DIV_ID_DOI_PREFIX = "doi-";
 	public static final String DIV_ID_CODE_SPAN_PREFIX = "codespan-";
 	public static final String DIV_ID_WIDGET_SYNTAX_PREFIX = "widgetsyntax-";
 	public static final String FOOTNOTE_ID_WIDGET_PREFIX = "wikiFootnote";

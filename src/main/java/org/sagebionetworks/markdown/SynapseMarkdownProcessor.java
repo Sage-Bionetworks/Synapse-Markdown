@@ -72,6 +72,7 @@ public class SynapseMarkdownProcessor {
 		allElementParsers.add(new CodeSpanParser());
 		//parsers protecting urls go before other simple parsers
 		allElementParsers.add(new ImageParser());
+		allElementParsers.add(new DoiAutoLinkParser());
 		allElementParsers.add(new LinkParser());
 		allElementParsers.add(new UrlAutoLinkParser());
 		
@@ -82,7 +83,6 @@ public class SynapseMarkdownProcessor {
 		allElementParsers.add(codeParser);
 		mathParser = new MathParser();
 		allElementParsers.add(mathParser);
-		allElementParsers.add(new DoiAutoLinkParser());
 		allElementParsers.add(new HeadingParser());
 		allElementParsers.add(new HorizontalLineParser());
 		allElementParsers.add(new ItalicsParser());
