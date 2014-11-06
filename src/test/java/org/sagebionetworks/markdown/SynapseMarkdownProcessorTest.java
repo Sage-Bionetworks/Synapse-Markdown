@@ -202,4 +202,18 @@ public class SynapseMarkdownProcessorTest {
 		
 		assertTrue(result.contains("</div><div"));
 	}
+	
+	@Test
+	public void testDoiLink() throws IOException {
+		//integration test for Synapse doi link
+		String exampleDoi="doi:10.7303/syn2699915";
+		String testString = "link to the "+exampleDoi+" for the challenge";
+		String result = processor.markdown2Html(testString, false, "");
+		
+		//link should go refer to the doi
+		assertTrue(result.contains("href=\"http://dx.doi.org/"+exampleDoi+"\""));
+		//and the text itself should contain "doi"
+		assertTrue(result.contains(">"+exampleDoi+"<"));
+
+	}
 }
