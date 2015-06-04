@@ -154,9 +154,8 @@ public class LinkParserTest {
 	}
 	
 	@Test
-	public void testLaziness(){
+	public void testInnerBrackets(){
 		//SWC-2187: links should find the smallest possible expression with a matched pair of square brackets followed by a matched pair of parentheses. 
-		//lazy / reluctant rather than greedy in regex terms.
 		String line = "Sometimes a [square bracket] is just a square bracket, but sometimes it's a [link](http://google.com).";
 		MarkdownElements elements = new MarkdownElements(line);
 		parser.processLine(elements);
