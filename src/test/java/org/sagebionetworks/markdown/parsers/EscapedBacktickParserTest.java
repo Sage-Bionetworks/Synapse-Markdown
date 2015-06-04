@@ -6,13 +6,13 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BacktickParserTest {
-	BacktickParser parser;
+public class EscapedBacktickParserTest {
+	EscapedBacktickParser parser;
 	CodeSpanParser codeParser;
 	
 	@Before
 	public void setup() {
-		parser = new BacktickParser();
+		parser = new EscapedBacktickParser();
 		codeParser = new CodeSpanParser();
 	}
 	

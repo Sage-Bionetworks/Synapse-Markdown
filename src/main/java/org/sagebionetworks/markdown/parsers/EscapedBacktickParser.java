@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import org.sagebionetworks.markdown.constants.MarkdownRegExConstants;
 
-public class BacktickParser extends BasicMarkdownElementParser {
+public class EscapedBacktickParser extends BasicMarkdownElementParser {
 	Pattern p = Pattern.compile(MarkdownRegExConstants.BACKTICK_ESCAPED_REGEX);
 	
 	@Override
