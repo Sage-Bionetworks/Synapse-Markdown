@@ -11,7 +11,7 @@ public class EscapedDashParser extends BasicMarkdownElementParser {
 	@Override
 	public void processLine(MarkdownElements line) {
 		Matcher m = p.matcher(line.getMarkdown());
-		line.updateMarkdown(m.replaceAll("&#150;"));
+		line.updateMarkdown(m.replaceAll("&ndash;"));
 	}
 
 }

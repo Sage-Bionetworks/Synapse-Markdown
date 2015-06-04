@@ -23,7 +23,7 @@ public class EscapedDashParserTest {
 		//Escape first, then use other parsers
 		parser.processLine(elements);
 		strikeoutParser.processLine(elements);
-		assertEquals(elements.getHtml(), "&#150;&#150;no strikethrough&#150;&#150;");
+		assertEquals(elements.getHtml(), "&ndash;&ndash;no strikethrough&ndash;&ndash;");
 		assertFalse(elements.getHtml().contains("<del>"));
 	}
 }
