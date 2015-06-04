@@ -152,4 +152,20 @@ public class LinkParserTest {
 		assertTrue(html.contains(href));
 		assertTrue(html.contains(text));
 	}
+	
+	@Test
+	public void testLaziness(){
+		//SWC-2187: links should find the smallest possible expression with a matched pair of square brackets followed by a matched pair of parentheses. 
+		//lazy / reluctant rather than greedy in regex terms.
+		String line = "Sometimes a [square bracket] is just a square bracket, but sometimes it's a [link](http://google.com).";
+		MarkdownElements elements = new MarkdownElements(line);
+		parser.processLine(elements);
+		String html = elements.getHtml();
+		Document doc = Jsoup.parse(html);
+		parser.completeParse(doc);
+		html = doc.html();
+		//should not process the square bracket text
+		assertTrue(html.contains("[square bracket]"));
+		assertTrue(html.contains(">link</a>"));
+	}
 }

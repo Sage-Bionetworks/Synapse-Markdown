@@ -159,7 +159,7 @@ public class MarkdownRegExConstants {
 	 * Recognized example input:
 	 * [An Example](http://www.example.com/)
 	 */
-	public static final String LINK_REGEX =	"(\\[(.*?)\\]\\([ \\t]*<?(.*?)>?\\))";
+	public static final String LINK_REGEX =	"(\\[([^\\]]*?)\\]\\([ \\t]*<?(.*?)>?\\))";
 	
 	/**
 	 * Recognized example input:
