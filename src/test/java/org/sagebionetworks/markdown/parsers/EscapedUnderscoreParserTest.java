@@ -6,13 +6,13 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UnderscoreParserTest {
-	UnderscoreParser parser;
+public class EscapedUnderscoreParserTest {
+	EscapedUnderscoreParser parser;
 	ItalicsParser italicsParser;
 	
 	@Before
 	public void setup() {
-		parser = new UnderscoreParser();
+		parser = new EscapedUnderscoreParser();
 		italicsParser = new ItalicsParser();
 	}
 	

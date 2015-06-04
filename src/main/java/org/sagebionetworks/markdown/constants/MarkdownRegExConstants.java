@@ -22,6 +22,13 @@ public class MarkdownRegExConstants {
 	public static final String BACKTICK_ESCAPED_REGEX = "\\\\`";
 	
 	/**
+	 * Recognizes example input:
+	 * \-
+	 */
+	public static final String DASH_ESCAPED_REGEX = "\\\\-";
+	
+	
+	/**
 	 * Recognized example input:
 	 * > This is in
 	 * > a blockquote.
