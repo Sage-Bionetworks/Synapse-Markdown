@@ -43,9 +43,9 @@ public class ReferenceParserTest {
 		assertTrue(result.contains("${reference?inlineWidget=true&amp;text=Smith John%2E Cooking book%2E August 2 2013&amp;footnoteId=1}."));
 		assertTrue(result.contains("${reference?text=Smith John%2E Cooking book%2E August 2 2013&amp;inlineWidget=true&amp;footnoteId=2}."));
 		//Check for footnotes at end of document
-		assertTrue(result.contains("<span id=\"wikiReference1\"></span>"));
+		assertTrue(result.contains("<span id=\"wikiReference1\">&nbsp;</span>"));
 		assertTrue(result.contains("${reference?inlineWidget=true&amp;text=Smith John%2E Cooking book%2E August 2 2013&amp;footnoteId=1}"));
-		assertTrue(result.contains("<span id=\"wikiReference2\"></span>"));
+		assertTrue(result.contains("<span id=\"wikiReference2\">&nbsp;</span>"));
 		assertTrue(result.contains("${reference?text=Smith John%2E Cooking book%2E August 2 2013&amp;inlineWidget=true&amp;footnoteId=2}"));
 	}
 	

@@ -46,7 +46,7 @@ public class ReferenceParser extends BasicMarkdownElementParser {
 			String referenceId = WidgetConstants.REFERENCE_ID_WIDGET_PREFIX + footnoteNumber;
 			String footnoteParameter = WidgetConstants.REFERENCE_FOOTNOTE_KEY + "=" + footnoteNumber;
 			
-			String updated = "<span id=\"" + referenceId + "\"></span>" + input.substring(m.start(), m.end() - 1) + "&amp;" + footnoteParameter + "}";
+			String updated = "<span id=\"" + referenceId + "\">&nbsp;</span>" + input.substring(m.start(), m.end() - 1) + "&amp;" + footnoteParameter + "}";
 			updated = Matcher.quoteReplacement(updated);	//Escapes the replacement string for appendReplacement
 			m.appendReplacement(sb, updated);
 			footnoteNumber++;
@@ -65,7 +65,7 @@ public class ReferenceParser extends BasicMarkdownElementParser {
 			String targetReferenceId = WidgetConstants.REFERENCE_ID_WIDGET_PREFIX + (i + 1);
 			String footnoteId = WidgetConstants.FOOTNOTE_ID_WIDGET_PREFIX + (i + 1);
 			
-			//Insert the special bookmark-link syntax to link back to the reference
+			//Insert bookmark to link back to the reference.
 			//SWC-2453: instead of relying on the link parser to insert the bookmark widget, do it here.
 			footnoteMarkdown.append(WidgetConstants.WIDGET_START_MARKDOWN + WidgetConstants.BOOKMARK_CONTENT_TYPE + "?");
 			footnoteMarkdown.append(WidgetConstants.TEXT_KEY + "=" + "[" + (i + 1) + "]&");
@@ -74,7 +74,7 @@ public class ReferenceParser extends BasicMarkdownElementParser {
 			footnoteMarkdown.append(WidgetConstants.WIDGET_END_MARKDOWN);			
 
 			//Assign id to the element so that the reference can link to this footnote
-			footnoteMarkdown.append("<span id=\"" + footnoteId + "\" class=\"moveup-4\">" + footnoteText + "</span>");
+			footnoteMarkdown.append("<span id=\"" + footnoteId + "\" class=\"margin-left-5\">" + footnoteText + "</span>");
 			footnoteMarkdown.append("<br>");
 		}
 		String parsedFootnotes = runSimpleParsers(footnoteMarkdown.toString(), parsersOnCompletion);
