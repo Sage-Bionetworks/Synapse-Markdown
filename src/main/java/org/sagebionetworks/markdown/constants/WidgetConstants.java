@@ -27,8 +27,6 @@ public class WidgetConstants {
 
 	
 	public static final String BOOKMARK_CONTENT_TYPE = "bookmark";
-	public static final String BOOKMARK_LINK_IDENTIFIER = "#Bookmark";
-	
 	
 	public static final String WIDGET_START_MARKDOWN = "${";
 	public static final String WIDGET_END_MARKDOWN =  "}";

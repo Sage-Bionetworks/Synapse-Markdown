@@ -99,20 +99,6 @@ public class LinkParserTest {
 	}
 	
 	@Test
-	public void testBookmarkAndLink() {
-		String line = "I want to refer to [this](#Bookmark:subject1). To see official page, go [here](http://example.com).";
-		MarkdownElements elements = new MarkdownElements(line);
-		parser.processLine(elements);
-		String result = elements.getMarkdown();
-		assertFalse(result.contains("${bookmark?text=this&inlineWidget=true&bookmarkID=subject1}"));
-		assertTrue(result.contains("widgetsyntax-0"));
-		assertFalse(result.contains("http://example.com"));
-		assertTrue(result.contains("link-0"));
-		assertTrue(result.contains(ServerMarkdownUtils.START_CONTAINER));
-		assertTrue(result.contains(ServerMarkdownUtils.END_CONTAINER));
-	}
-	
-	@Test
 	public void testSynapseLinkWithText(){
 		String text = "custom link text";
 		String href = "syn123";

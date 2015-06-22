@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sagebionetworks.markdown.utils.ServerMarkdownUtils;
 
 public class ReferenceParserTest {
 	ReferenceParser parser;
@@ -67,6 +68,11 @@ public class ReferenceParserTest {
 		//See if link regex is detected. Check for container of link.
 		assertTrue(result.contains("<span id=\"link-0\"></span>"));
 		
+		//also look for bookmark target in footnote section
+		assertTrue(result.contains("widgetsyntax-0"));
+		assertTrue(result.contains("link-0"));
+		assertTrue(result.contains(ServerMarkdownUtils.START_CONTAINER));
+		assertTrue(result.contains(ServerMarkdownUtils.END_CONTAINER));
 	}
 	
 }

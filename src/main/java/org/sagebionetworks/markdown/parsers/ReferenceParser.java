@@ -66,7 +66,12 @@ public class ReferenceParser extends BasicMarkdownElementParser {
 			String footnoteId = WidgetConstants.FOOTNOTE_ID_WIDGET_PREFIX + (i + 1);
 			
 			//Insert the special bookmark-link syntax to link back to the reference
-			footnoteMarkdown.append("[[" + (i + 1) + "]](" + WidgetConstants.BOOKMARK_LINK_IDENTIFIER + ":" + targetReferenceId + ") ");
+			//SWC-2453: instead of relying on the link parser to insert the bookmark widget, do it here.
+			footnoteMarkdown.append(WidgetConstants.WIDGET_START_MARKDOWN + WidgetConstants.BOOKMARK_CONTENT_TYPE + "?");
+			footnoteMarkdown.append(WidgetConstants.TEXT_KEY + "=" + "[" + (i + 1) + "]&");
+			footnoteMarkdown.append(WidgetConstants.INLINE_WIDGET_KEY + "=true&");
+			footnoteMarkdown.append(WidgetConstants.BOOKMARK_KEY + "=" + targetReferenceId);
+			footnoteMarkdown.append(WidgetConstants.WIDGET_END_MARKDOWN);			
 
 			//Assign id to the element so that the reference can link to this footnote
 			footnoteMarkdown.append("<span id=\"" + footnoteId + "\" class=\"moveup-4\">" + footnoteText + "</span>");
