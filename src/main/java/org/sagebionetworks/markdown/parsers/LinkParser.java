@@ -38,7 +38,6 @@ public class LinkParser extends BasicMarkdownElementParser  {
 	@Override
 	public void processLine(MarkdownElements line) {
 		String input = line.getMarkdown();
-		String bookmarkTarget = WidgetConstants.BOOKMARK_LINK_IDENTIFIER + ":";
 		Matcher m = p1.matcher(input);
 		StringBuffer sb = new StringBuffer();
 		while(m.find()) {
@@ -48,47 +47,40 @@ public class LinkParser extends BasicMarkdownElementParser  {
 			
 			//If the "url" targets a bookmarked element in the page, replace it with widget syntax 
 			//for the renderer to attach a handler
-			if(url.contains(bookmarkTarget)) {
-				updated.append(WidgetConstants.WIDGET_START_MARKDOWN + WidgetConstants.BOOKMARK_CONTENT_TYPE + "?");
-				updated.append(WidgetConstants.TEXT_KEY + "=" + text + "&");
-				updated.append(WidgetConstants.INLINE_WIDGET_KEY + "=true&");
-				updated.append(WidgetConstants.BOOKMARK_KEY + "=" +	url.substring(bookmarkTarget.length()));
-				updated.append(WidgetConstants.WIDGET_END_MARKDOWN);			
+			String testUrl = url.toLowerCase();
+			//is this a synapse id?
+			Matcher synapseIdMatcher = synapseIdPattern.matcher(testUrl);
+			if(synapseIdMatcher.find()) {
+				//is there a version defined?
+				String versionString = "";
+				if (synapseIdMatcher.group(2) != null && synapseIdMatcher.group(2).trim().length() > 0) {
+					versionString = "/version/" + synapseIdMatcher.group(2);
+				}
+				url = "#!Synapse:" + synapseIdMatcher.group(1) + versionString;
 			} else {
-				String testUrl = url.toLowerCase();
-				//is this a synapse id?
-				Matcher synapseIdMatcher = synapseIdPattern.matcher(testUrl);
-				if(synapseIdMatcher.find()) {
-					//is there a version defined?
-					String versionString = "";
-					if (synapseIdMatcher.group(2) != null && synapseIdMatcher.group(2).trim().length() > 0) {
-						versionString = "/version/" + synapseIdMatcher.group(2);
-					}
-					url = "#!Synapse:" + synapseIdMatcher.group(1) + versionString;
-				} else {
-					//Check for incomplete urls (i.e. urls starting without http/ftp/file/#)
-					Matcher protocolMatcher = protocol.matcher(testUrl);
-					if(!protocolMatcher.find()) {
-						if (!testUrl.startsWith("#"))
-							url = WidgetConstants.URL_PROTOCOL + url; 
-						else {
-							//starts with '#'.  if does not include bang, add it here
-							if(testUrl.length() > 1 && testUrl.charAt(1) != '!')
-								url = "#!" + url.substring(1);
-						}
+				//Check for incomplete urls (i.e. urls starting without http/ftp/file/#)
+				Matcher protocolMatcher = protocol.matcher(testUrl);
+				if(!protocolMatcher.find()) {
+					if (!testUrl.startsWith("#"))
+						url = WidgetConstants.URL_PROTOCOL + url; 
+					else {
+						//starts with '#'.  if does not include bang, add it here
+						if(testUrl.length() > 1 && testUrl.charAt(1) != '!')
+							url = "#!" + url.substring(1);
 					}
 				}
-				
-				StringBuilder html = new StringBuilder();
-				html.append(ServerMarkdownUtils.getStartLink(getClientHostString(), url));
-				html.append(url + "\">");
-				String processedText = runSimpleParsers(text, simpleParsers);
-				html.append(processedText + ServerMarkdownUtils.END_LINK);
-				extractor.putContainerIdToContent(getCurrentDivID(), html.toString());
-				
-				updated.append(extractor.getContainerElementStart() + getCurrentDivID());
-				updated.append("\">" + extractor.getContainerElementEnd());
 			}
+			
+			StringBuilder html = new StringBuilder();
+			html.append(ServerMarkdownUtils.getStartLink(getClientHostString(), url));
+			html.append(url + "\">");
+			String processedText = runSimpleParsers(text, simpleParsers);
+			html.append(processedText + ServerMarkdownUtils.END_LINK);
+			extractor.putContainerIdToContent(getCurrentDivID(), html.toString());
+			
+			updated.append(extractor.getContainerElementStart() + getCurrentDivID());
+			updated.append("\">" + extractor.getContainerElementEnd());
+			
 			//Escape the replacement string for bookmarks' widget syntax
 			m.appendReplacement(sb, Matcher.quoteReplacement(updated.toString()));
 		}
