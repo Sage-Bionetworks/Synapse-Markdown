@@ -1,6 +1,7 @@
 package org.sagebionetworks.markdown.parsers;
 
 import org.jsoup.nodes.Document;
+
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public interface MarkdownElementParser {
 	 */
 	boolean isInputSingleLine();
 	
-	void setIsPreview(boolean isPreview);
+	void setSuffix(String suffix);
 	
 	void setClientHostString(String clientHostString);
 }
