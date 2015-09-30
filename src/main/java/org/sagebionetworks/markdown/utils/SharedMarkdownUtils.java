@@ -29,9 +29,4 @@ public class SharedMarkdownUtils {
 		sb.append("</span>");
 	    return sb.toString();
 	}
-
-	public static String getPreviewSuffix(Boolean isPreview) {
-		return isPreview ? WidgetConstants.DIV_ID_PREVIEW_SUFFIX : "";
-	}
-
 }

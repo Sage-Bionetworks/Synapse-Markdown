@@ -21,7 +21,7 @@ public class UrlAutoLinkParser extends BasicMarkdownElementParser {
 	}
 	
 	private String getCurrentDivID() {
-		return WidgetConstants.DIV_ID_AUTOLINK_PREFIX + extractor.getCurrentContainerId() + SharedMarkdownUtils.getPreviewSuffix(isPreview);
+		return WidgetConstants.DIV_ID_AUTOLINK_PREFIX + extractor.getCurrentContainerId() + suffix;
 	}
 	
 	@Override

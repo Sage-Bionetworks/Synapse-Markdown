@@ -27,7 +27,7 @@ public class MathParser extends BasicMarkdownElementParser  {
 	}
 
 	private String getCurrentDivID() {
-		return WidgetConstants.DIV_ID_MATHJAX_PREFIX + extractor.getCurrentContainerId() + SharedMarkdownUtils.getPreviewSuffix(isPreview);
+		return WidgetConstants.DIV_ID_MATHJAX_PREFIX + extractor.getCurrentContainerId() + suffix;
 	}
 	
 	@Override
