@@ -216,4 +216,13 @@ public class SynapseMarkdownProcessorTest {
 		assertTrue(result.contains(">"+exampleDoi+"<"));
 
 	}
+	
+	@Test
+	public void testSuffix() throws IOException{
+		String text = "Contains a Synapse widget ${fakewidget?param1=a} in the markdown.";
+		String suffix = "-suffix-test";
+		//suffix is used in the div id, the caller can find each element container (to inject a Synapse widget).
+		String actualResult = processor.markdown2Html(text, suffix, "");
+		assertTrue(actualResult.contains(suffix));
+	}
 }
