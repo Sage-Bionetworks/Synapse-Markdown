@@ -37,6 +37,7 @@ import org.sagebionetworks.markdown.parsers.TableParser;
 import org.sagebionetworks.markdown.parsers.TildeParser;
 import org.sagebionetworks.markdown.parsers.UnderscoreParser;
 import org.sagebionetworks.markdown.parsers.UrlAutoLinkParser;
+import org.sagebionetworks.markdown.parsers.VerticalLineParser;
 import org.sagebionetworks.markdown.utils.ServerMarkdownUtils;
 
 
@@ -67,6 +68,7 @@ public class SynapseMarkdownProcessor {
 		//parsers that handle escaping
 		allElementParsers.add(new TildeParser());
 		allElementParsers.add(new UnderscoreParser());
+		allElementParsers.add(new VerticalLineParser());
 		allElementParsers.add(new BacktickParser());
 		//other parsers should not affect code spans
 		allElementParsers.add(new CodeSpanParser());

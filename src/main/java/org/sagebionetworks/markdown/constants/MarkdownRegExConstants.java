@@ -235,6 +235,12 @@ public class MarkdownRegExConstants {
 	public static final String UNDERSCORE_ESCAPED_REGEX = "\\\\_";
 	
 	/**
+	 * Recognizes example input:
+	 * \|
+	 */
+	public static final String VERTICAL_LINE_ESCAPED_REGEX = "\\\\\\|";
+	
+	/**
 	 * Recognized example input:
 	 * * First Item
 	 */
