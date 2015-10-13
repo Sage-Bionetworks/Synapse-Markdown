@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
-import org.sagebionetworks.markdown.parsers.BacktickParser;
 import org.sagebionetworks.markdown.parsers.BlockQuoteParser;
 import org.sagebionetworks.markdown.parsers.BoldParser;
 import org.sagebionetworks.markdown.parsers.BookmarkTargetParser;
@@ -17,6 +15,10 @@ import org.sagebionetworks.markdown.parsers.CenterTextParser;
 import org.sagebionetworks.markdown.parsers.CodeParser;
 import org.sagebionetworks.markdown.parsers.CodeSpanParser;
 import org.sagebionetworks.markdown.parsers.DoiAutoLinkParser;
+import org.sagebionetworks.markdown.parsers.EscapedBacktickParser;
+import org.sagebionetworks.markdown.parsers.EscapedDashParser;
+import org.sagebionetworks.markdown.parsers.EscapedUnderscoreParser;
+import org.sagebionetworks.markdown.parsers.EscapedVerticalLineParser;
 import org.sagebionetworks.markdown.parsers.HeadingParser;
 import org.sagebionetworks.markdown.parsers.HorizontalLineParser;
 import org.sagebionetworks.markdown.parsers.ImageParser;
@@ -35,9 +37,7 @@ import org.sagebionetworks.markdown.parsers.SynapseAutoLinkParser;
 import org.sagebionetworks.markdown.parsers.SynapseMarkdownWidgetParser;
 import org.sagebionetworks.markdown.parsers.TableParser;
 import org.sagebionetworks.markdown.parsers.TildeParser;
-import org.sagebionetworks.markdown.parsers.UnderscoreParser;
 import org.sagebionetworks.markdown.parsers.UrlAutoLinkParser;
-import org.sagebionetworks.markdown.parsers.VerticalLineParser;
 import org.sagebionetworks.markdown.utils.ServerMarkdownUtils;
 
 
@@ -67,9 +67,10 @@ public class SynapseMarkdownProcessor {
 		
 		//parsers that handle escaping
 		allElementParsers.add(new TildeParser());
-		allElementParsers.add(new UnderscoreParser());
-		allElementParsers.add(new VerticalLineParser());
-		allElementParsers.add(new BacktickParser());
+		allElementParsers.add(new EscapedUnderscoreParser());
+		allElementParsers.add(new EscapedBacktickParser());
+		allElementParsers.add(new EscapedVerticalLineParser());
+		allElementParsers.add(new EscapedDashParser());
 		//other parsers should not affect code spans
 		allElementParsers.add(new CodeSpanParser());
 		//parsers protecting urls go before other simple parsers
@@ -110,7 +111,7 @@ public class SynapseMarkdownProcessor {
 	 * @param panel
 	 * @throws IOException 
 	 */
-	public String markdown2Html(String markdown, Boolean isPreview, String clientHostString) throws IOException {
+	public String markdown2Html(String markdown, String suffix, String clientHostString) throws IOException {
 		String originalMarkdown = markdown;
 		if (markdown == null || markdown.equals("")) return "";
 		
@@ -118,20 +119,23 @@ public class SynapseMarkdownProcessor {
 		markdown = Jsoup.clean(markdown, "", Whitelist.none(),  new Document.OutputSettings().prettyPrint(false));
 		markdown = blockquotePatternProtector.matcher(markdown).replaceAll(">");
 		
-		String html = processMarkdown(markdown, allElementParsers, isPreview, clientHostString);
+		String html = processMarkdown(markdown, allElementParsers, suffix, clientHostString);
 		if (html == null) {
 			//if the markdown processor fails to convert the md to html (will return null in this case), return the raw markdown instead. (as ugly as it might be, it's better than no information).
 			return originalMarkdown; 
 		}
 		//URLs are automatically resolved from the markdown processor
-		html = "<div class=\"markdown\">" + postProcessHtml(html, isPreview) + "</div>";
+		html = "<div class=\"markdown\">" + postProcessHtml(html) + "</div>";
 		
 		return html;
 	}
 	
-	public String processMarkdown(String markdown, List<MarkdownElementParser> parsers, boolean isPreview, String clientHostString) {
+	public String processMarkdown(String markdown, List<MarkdownElementParser> parsers, String suffix, String clientHostString) {
 		//go through the document once, and apply all markdown parsers to it
 		StringBuilder output = new StringBuilder();
+		if (suffix == null) {
+			suffix = "";
+		}
 		
 		//these are the parsers that only take a single line as input (element does not span across lines)
 		List<MarkdownElementParser> simpleParsers = new ArrayList<MarkdownElementParser>();
@@ -153,7 +157,7 @@ public class SynapseMarkdownProcessor {
 		String lowerClientHostString = clientHostString == null ? "" : clientHostString.toLowerCase();
 		for (MarkdownElementParser parser : parsers) {
 			parser.reset(simpleParsers);
-			parser.setIsPreview(isPreview);
+			parser.setSuffix(suffix);
 			parser.setClientHostString(lowerClientHostString);
 		}
 		
@@ -229,7 +233,7 @@ public class SynapseMarkdownProcessor {
 	 * @param markdown
 	 * @return
 	 */
-	public String postProcessHtml(String html, boolean isPreview) {
+	public String postProcessHtml(String html) {
 		//using jsoup, since it's already in this project!
 		Document doc = Jsoup.parse(html);
 		for (MarkdownElementParser parser : allElementParsers) {
@@ -252,22 +256,15 @@ public class SynapseMarkdownProcessor {
 		// Check how many arguments were passed in
 	    if(args.length != 3)
 	    {
-	        System.out.println("Usage: java -jar markdown-<version>.jar <client_host> <is_preview> <markdown>");
+	        System.out.println("Usage: java -jar markdown-<version>.jar <client_host> <div suffix> <markdown>");
 	        System.exit(0);
 	    }
 	    
 	    String clientHostString = args[0];
-	    Boolean isPreview = false;
-	    try {
-			isPreview = Boolean.parseBoolean(args[1]);
-		} catch (Exception e) {
-			e.printStackTrace();
-		    System.exit(0);
-		}
-	    
+	    String suffix = args[1];
 	    String markdown = args[2];
 	    try {
-			String html = getInstance().markdown2Html(markdown, isPreview, clientHostString);
+			String html = getInstance().markdown2Html(markdown, suffix, clientHostString);
 			System.out.println(html);
 		} catch (IOException e) {
 			e.printStackTrace();

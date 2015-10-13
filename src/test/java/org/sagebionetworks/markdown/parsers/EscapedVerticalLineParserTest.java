@@ -6,13 +6,13 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 
-public class VerticalLineParserTest {
-	VerticalLineParser parser;
+public class EscapedVerticalLineParserTest {
+	EscapedVerticalLineParser parser;
 	ItalicsParser italicsParser;
 	
 	@Before
 	public void setup() {
-		parser = new VerticalLineParser();
+		parser = new EscapedVerticalLineParser();
 		italicsParser = new ItalicsParser();
 	}
 	

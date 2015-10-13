@@ -24,7 +24,7 @@ public class TableParserTest {
 		
 		simpleParsers = new ArrayList<MarkdownElementParser>();
 		simpleParsers.add(new BoldParser());
-		simpleParsers.add(new UnderscoreParser());
+		simpleParsers.add(new EscapedUnderscoreParser());
 		simpleParsers.add(new SynapseMarkdownWidgetParser());
 		
 		parser.reset(simpleParsers);

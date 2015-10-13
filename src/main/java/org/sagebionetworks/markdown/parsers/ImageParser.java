@@ -19,7 +19,7 @@ public class ImageParser extends BasicMarkdownElementParser {
 	}
 	
 	private String getCurrentDivID() {
-		return WidgetConstants.DIV_ID_IMAGE_PREFIX + extractor.getCurrentContainerId() + SharedMarkdownUtils.getPreviewSuffix(isPreview);
+		return WidgetConstants.DIV_ID_IMAGE_PREFIX + extractor.getCurrentContainerId() + suffix;
 	}
 
 	@Override

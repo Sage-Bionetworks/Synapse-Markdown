@@ -22,6 +22,13 @@ public class MarkdownRegExConstants {
 	public static final String BACKTICK_ESCAPED_REGEX = "\\\\`";
 	
 	/**
+	 * Recognizes example input:
+	 * \-
+	 */
+	public static final String DASH_ESCAPED_REGEX = "\\\\-";
+	
+	
+	/**
 	 * Recognized example input:
 	 * > This is in
 	 * > a blockquote.
@@ -159,7 +166,7 @@ public class MarkdownRegExConstants {
 	 * Recognized example input:
 	 * [An Example](http://www.example.com/)
 	 */
-	public static final String LINK_REGEX =	"(\\[(.*?)\\]\\([ \\t]*<?(.*?)>?\\))";
+	public static final String LINK_REGEX =	"(\\[([^\\[\\]]*?)\\]\\([ \\t]*<?(.*?)>?\\))";
 	
 	/**
 	 * Recognized example input:

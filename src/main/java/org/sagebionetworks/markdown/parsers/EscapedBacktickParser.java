@@ -5,12 +5,13 @@ import java.util.regex.Pattern;
 
 import org.sagebionetworks.markdown.constants.MarkdownRegExConstants;
 
-public class VerticalLineParser extends BasicMarkdownElementParser {
-	Pattern p = Pattern.compile(MarkdownRegExConstants.VERTICAL_LINE_ESCAPED_REGEX);
+public class EscapedBacktickParser extends BasicMarkdownElementParser {
+	Pattern p = Pattern.compile(MarkdownRegExConstants.BACKTICK_ESCAPED_REGEX);
 	
 	@Override
 	public void processLine(MarkdownElements line) {
 		Matcher m = p.matcher(line.getMarkdown());
-		line.updateMarkdown(m.replaceAll("&#124;"));
+		line.updateMarkdown(m.replaceAll("&#96;"));
 	}
+
 }

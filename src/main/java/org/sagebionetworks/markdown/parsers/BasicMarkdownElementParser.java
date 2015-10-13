@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public abstract class BasicMarkdownElementParser implements MarkdownElementParser {
-	protected boolean isPreview;
+	protected String suffix="";
 	protected String clientHostString="";
 	
 	/**
@@ -49,8 +49,8 @@ public abstract class BasicMarkdownElementParser implements MarkdownElementParse
 	public void completeParse(Document doc) {
 	}
 
-	public void setIsPreview(boolean isPreview) {
-		this.isPreview= isPreview;
+	public void setSuffix(String suffix) {
+		this.suffix= suffix;
 	}
 	
 	public String getClientHostString() {

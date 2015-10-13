@@ -99,20 +99,6 @@ public class LinkParserTest {
 	}
 	
 	@Test
-	public void testBookmarkAndLink() {
-		String line = "I want to refer to [this](#Bookmark:subject1). To see official page, go [here](http://example.com).";
-		MarkdownElements elements = new MarkdownElements(line);
-		parser.processLine(elements);
-		String result = elements.getMarkdown();
-		assertFalse(result.contains("${bookmark?text=this&inlineWidget=true&bookmarkID=subject1}"));
-		assertTrue(result.contains("widgetsyntax-0"));
-		assertFalse(result.contains("http://example.com"));
-		assertTrue(result.contains("link-0"));
-		assertTrue(result.contains(ServerMarkdownUtils.START_CONTAINER));
-		assertTrue(result.contains(ServerMarkdownUtils.END_CONTAINER));
-	}
-	
-	@Test
 	public void testSynapseLinkWithText(){
 		String text = "custom link text";
 		String href = "syn123";
@@ -151,5 +137,20 @@ public class LinkParserTest {
 		String html = doc.html();
 		assertTrue(html.contains(href));
 		assertTrue(html.contains(text));
+	}
+	
+	@Test
+	public void testInnerBrackets(){
+		//SWC-2187: links should find the smallest possible expression with a matched pair of square brackets followed by a matched pair of parentheses. 
+		String line = "Sometimes a [square bracket] is just a square bracket, but sometimes it's a [link](http://google.com).";
+		MarkdownElements elements = new MarkdownElements(line);
+		parser.processLine(elements);
+		String html = elements.getHtml();
+		Document doc = Jsoup.parse(html);
+		parser.completeParse(doc);
+		html = doc.html();
+		//should not process the square bracket text
+		assertTrue(html.contains("[square bracket]"));
+		assertTrue(html.contains(">link</a>"));
 	}
 }
