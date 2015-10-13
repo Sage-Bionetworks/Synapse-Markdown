@@ -244,8 +244,9 @@ public class MarkdownRegExConstants {
 	/**
 	 * Recognizes example input:
 	 * \|
+	 * Need to escape |, as it's a recognized regex for "or"
 	 */
-	public static final String VERTICAL_LINE_ESCAPED_REGEX = "\\\\\\|";
+	public static final String VERTICAL_LINE_ESCAPED_REGEX = "\\\\[|]";
 	
 	/**
 	 * Recognized example input:
