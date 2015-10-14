@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
-import org.sagebionetworks.markdown.parsers.EscapedBacktickParser;
 import org.sagebionetworks.markdown.parsers.BlockQuoteParser;
 import org.sagebionetworks.markdown.parsers.BoldParser;
 import org.sagebionetworks.markdown.parsers.BookmarkTargetParser;
@@ -17,7 +15,10 @@ import org.sagebionetworks.markdown.parsers.CenterTextParser;
 import org.sagebionetworks.markdown.parsers.CodeParser;
 import org.sagebionetworks.markdown.parsers.CodeSpanParser;
 import org.sagebionetworks.markdown.parsers.DoiAutoLinkParser;
+import org.sagebionetworks.markdown.parsers.EscapedBacktickParser;
 import org.sagebionetworks.markdown.parsers.EscapedDashParser;
+import org.sagebionetworks.markdown.parsers.EscapedUnderscoreParser;
+import org.sagebionetworks.markdown.parsers.EscapedVerticalLineParser;
 import org.sagebionetworks.markdown.parsers.HeadingParser;
 import org.sagebionetworks.markdown.parsers.HorizontalLineParser;
 import org.sagebionetworks.markdown.parsers.ImageParser;
@@ -36,7 +37,6 @@ import org.sagebionetworks.markdown.parsers.SynapseAutoLinkParser;
 import org.sagebionetworks.markdown.parsers.SynapseMarkdownWidgetParser;
 import org.sagebionetworks.markdown.parsers.TableParser;
 import org.sagebionetworks.markdown.parsers.TildeParser;
-import org.sagebionetworks.markdown.parsers.EscapedUnderscoreParser;
 import org.sagebionetworks.markdown.parsers.UrlAutoLinkParser;
 import org.sagebionetworks.markdown.utils.ServerMarkdownUtils;
 
@@ -69,6 +69,7 @@ public class SynapseMarkdownProcessor {
 		allElementParsers.add(new TildeParser());
 		allElementParsers.add(new EscapedUnderscoreParser());
 		allElementParsers.add(new EscapedBacktickParser());
+		allElementParsers.add(new EscapedVerticalLineParser());
 		allElementParsers.add(new EscapedDashParser());
 		//other parsers should not affect code spans
 		allElementParsers.add(new CodeSpanParser());

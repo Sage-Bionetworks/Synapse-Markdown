@@ -242,6 +242,13 @@ public class MarkdownRegExConstants {
 	public static final String UNDERSCORE_ESCAPED_REGEX = "\\\\_";
 	
 	/**
+	 * Recognizes example input:
+	 * \|
+	 * Need to escape |, as it's a recognized regex for "or"
+	 */
+	public static final String VERTICAL_LINE_ESCAPED_REGEX = "\\\\[|]";
+	
+	/**
 	 * Recognized example input:
 	 * * First Item
 	 */
