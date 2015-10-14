@@ -4,7 +4,7 @@
 
   <groupId>org.sagebionetworks</groupId>
   <artifactId>markdown</artifactId>
-  <version>develop-SNAPSHOT</version>
+  <version>1.1</version>
   <packaging>jar</packaging>
 
   <name>markdown</name>
