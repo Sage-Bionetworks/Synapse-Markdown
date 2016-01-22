@@ -44,7 +44,7 @@ import org.sagebionetworks.markdown.utils.ServerMarkdownUtils;
 public class SynapseMarkdownProcessor {
 	private static SynapseMarkdownProcessor singleton = null;
 	private List<MarkdownElementParser> allElementParsers = new ArrayList<MarkdownElementParser>();
-	private Pattern blockquotePatternProtector;
+	private Pattern blockquotePatternProtector, gtProtector, ltProtector;
 	private CodeParser codeParser;
 	private MathParser mathParser;
 	public static SynapseMarkdownProcessor getInstance() {
@@ -98,6 +98,8 @@ public class SynapseMarkdownProcessor {
 		allElementParsers.add(new TableParser());
 		allElementParsers.add(new RowColumnParser());
 		blockquotePatternProtector = Pattern.compile("^&gt;", Pattern.MULTILINE);
+		gtProtector = Pattern.compile(">", Pattern.MULTILINE);
+		ltProtector = Pattern.compile("<", Pattern.MULTILINE);
 	}
 	
 	/**
@@ -115,6 +117,8 @@ public class SynapseMarkdownProcessor {
 		String originalMarkdown = markdown;
 		if (markdown == null || markdown.equals("")) return "";
 		
+		markdown = gtProtector.matcher(markdown).replaceAll("&gt;");
+		markdown = ltProtector.matcher(markdown).replaceAll("&lt;");
 		//To enable different html levels, we should change the Whitelist.  that's it!
 		markdown = Jsoup.clean(markdown, "", Whitelist.none(),  new Document.OutputSettings().prettyPrint(false));
 		markdown = blockquotePatternProtector.matcher(markdown).replaceAll(">");

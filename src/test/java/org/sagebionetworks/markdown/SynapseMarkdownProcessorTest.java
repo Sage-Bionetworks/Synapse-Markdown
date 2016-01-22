@@ -103,6 +103,7 @@ public class SynapseMarkdownProcessorTest {
 			"> ``` r\n" +
 			"> Then a code block!\n" +
 			"> ```";
+		
 		String actualResult = processor.markdown2Html(testString, null, "");
 		String expectedResult = "<blockquote><ul><li><p>Item 1</p></li>";
 		String expectedResult2 = "<li><p> Item 2</p><ol start=\"1\"><li><p> </p><h4 id=\"synapseheading0\" level=\"h4\" toc-style=\"toc-indent0\">SubItem 2a</h4><p></p></li><li><p> SubItem 2b</p></li></ol></li></ul>";
@@ -225,4 +226,14 @@ public class SynapseMarkdownProcessorTest {
 		String actualResult = processor.markdown2Html(text, suffix, "");
 		assertTrue(actualResult.contains(suffix));
 	}
+	
+	@Test
+	public void testSWC2854() throws IOException{
+		String text = "Text in this line after (0.01<LALA<0.05)";
+		String text2= " is not included in the output html";
+		//suffix is used in the div id, the caller can find each element container (to inject a Synapse widget).
+		String actualResult = processor.markdown2Html(text + text2, "", "");
+		assertTrue(actualResult.contains(text2));
+	}
+	
 }
