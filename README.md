@@ -1,5 +1,5 @@
 # Synapse-Markdown
-**That this project is no longer maintained.**
+**This project is no longer maintained.**
 
 It's been replaced by [markdown-it](https://github.com/markdown-it/markdown-it).
 
