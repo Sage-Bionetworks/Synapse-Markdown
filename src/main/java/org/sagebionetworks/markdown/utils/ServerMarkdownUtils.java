@@ -188,7 +188,7 @@ public class ServerMarkdownUtils {
 	}
 	
 	public static String getDoiLink(String fullDoi, String doiName){
-		return "<a target=\"_blank\" class=\"link\" href=\"http://dx.doi.org/" +
+		return "<a target=\"_blank\" class=\"link\" href=\"https://doi.org/" +
 				doiName + "\">" + fullDoi +"</a>";
 	}
 	

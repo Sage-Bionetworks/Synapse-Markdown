@@ -212,7 +212,7 @@ public class SynapseMarkdownProcessorTest {
 		String result = processor.markdown2Html(testString, null, "");
 		
 		//link should go refer to the doi
-		assertTrue(result.contains("href=\"http://dx.doi.org/"+exampleDoi+"\""));
+		assertTrue(result.contains("href=\"https://doi.org/"+exampleDoi+"\""));
 		//and the text itself should contain "doi"
 		assertTrue(result.contains(">"+exampleDoi+"<"));
 
